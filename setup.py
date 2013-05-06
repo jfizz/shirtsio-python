@@ -1,6 +1,10 @@
 import os
 import sys
 
+NAME = 'ShirtsioAPI'
+execfile('shirtsio/version.py')
+DESCRIPTION = 'Shirts.io API for Python'
+
 try:
     from setuptools import setup
 except ImportError:
@@ -11,39 +15,30 @@ try:
 except ImportError:
     from distutils.command.build_py import build_py
 
-# Don't import shirtsio.py module here, since deps may not be installed
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'shirtsio'))
-import importer
-import version
-
 path, script = os.path.split(sys.argv[0])
 os.chdir(os.path.abspath(path))
 
 requests = 'requests >= 0.8.8'
 if sys.version_info < (2, 6):
-  requests += ', < 0.10.1'
+    requests += ', < 0.10.1'
 install_requires = [requests]
 
-# Get simplejson if we don't already have json
-try:
-  importer.import_json()
-except ImportError:
-  install_requires.append('simplejson')
-
-try:
-  import json
-  _json_loaded = hasattr(json, 'loads')
-except ImportError:
-    pass
-
-setup(name='shirtsio.py',
-      cmdclass = {'build_py': build_py},
-      version=version.VERSION,
-      description='Shirtsio python bindings',
-      author='Shirtsio',
-      author_email='',
-      url='https://www.shirts.io/',
-      packages=['shirtsio.py'],
-      package_data={'shirtsio.py': ['../VERSION']},
+setup(name='shirtsio',
+      version=VERSION,
+      description=DESCRIPTION,
+      author='shirtsio',
+      author_email='harrison.gu@movit-tech.com',
+      url='https://github.com/ooshirts/shirtsio-python',
+      packages=['shirtsio'],
+      scripts=['scripts/shirtsio_api.py'],
       install_requires=install_requires,
+      platforms='Any',
+      classifiers=['Development Status :: 5 - Production/Stable',
+                   'Intended Audience :: Developers',
+                   'License :: OSI Approved :: MIT License',
+                   'Operating System :: OS Independent',
+                   'Programming Language :: Python',
+                   'Topic :: Software Development',
+                   'Topic :: Software Development :: Libraries',
+                   'Topic :: Software Development :: Libraries :: Python Modules']
 )

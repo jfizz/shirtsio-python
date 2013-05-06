@@ -1,8 +1,5 @@
 /build
 /dist
 /MANIFEST
-/stripe.egg-info
 *.pyc
 *.egg
-.tox
-*.class

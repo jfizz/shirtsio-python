@@ -1,6 +1,14 @@
 # coding=utf-8
 import ast
+import logging
 import requests
+
+logger = logging.getLogger('shirtsio')
+
+
+api_key = None
+api_base = 'https://www.shirts.io/api/v1/'
+api_version = None
 
 
 # This is the Base class for Shirt.io requests library
@@ -40,9 +48,7 @@ class Accounts(Base):
 
         self.url_balance = self.url_shirtsio + "internal/integration/balance/"
 
-    @staticmethod
     def get_balance(self):
-        print self.url_balance
         return self.do_request(self.url_balance, self.params)
 
 
