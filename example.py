@@ -1,18 +1,12 @@
-# import stripe
-#
-# stripe.api_key = 'tGN0bIwXnHdwOa85VABjPdSn8nWY7G7I'
-#
-# print "Attempting charge..."
-#
-# resp = stripe.Charge.create(
-#          amount=200,
-#          currency='usd',
-#          card={
-#            'number': '4242424242424242',
-#            'exp_month': 10,
-#            'exp_year': 2014
-#          },
-#          description='customer@gmail.com'
-#        )
-#
-# print 'Success: %r' % (resp, )
+import shirtsio
+
+shirtsio.resources.api_key='a086134c5625ebfd4e080d19749bc0cb736ad1d5'
+
+# get api key
+auth_resp = shirtsio.Account.integration_auth({'username': 'deantest', 'password': 'Pa$$w0rd'})
+print auth_resp['api_key']
+
+# get quote
+quote_resp = shirtsio.Quote.get_quote({'garment[0][product_id]': 3, 'garment[0][color]': 'White', 'garment[0][sizes][med]': 100,
+                          'print[front][color_count]': 5})
+print quote_resp['subtotal']

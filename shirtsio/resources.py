@@ -5,103 +5,127 @@ from shirtsio.requestor import APIRequestor
 
 logger = logging.getLogger('shirtsio')
 
+api_key = None
 
-# This is the Base class for Shirt.io requests library
-class APIResource():
+
+class APIResource(object):
     @classmethod
-    def do_request(cls, api_key=None, url=None, **params):
-        requestor = APIRequestor(api_key)
+    def dict_params(cls, no_api_key, params):
+        api_key_param = {'api_key': api_key}
+
+        if no_api_key:
+            return params
+
+        if params:
+            return dict(api_key_param, **params)
+
+        return api_key_param
+
+    @classmethod
+    def do_request(cls, url=None, params=None, method="get", files=None, no_api_key=False):
+        requestor = APIRequestor()
+        params = cls.dict_params(no_api_key, params)
         url = requestor.api_url(url)
-        response, api_key = requestor.request(url, params)
-        return response
+        return requestor.request(url, params, method, files)
 
 
 # This is the encapsulation class for accounts requests to Shirt.io
-class Accounts(APIResource):
-    def __init__(self, api_key):
-        APIResource.__init__(self)
-        self.params = {'api_key': api_key}
+class Account(APIResource):
+    url_register_user = "internal/user/register/"
+    url_update_user = "internal/user/update/"
+    url_integration_auth = "internal/integration/auth/"
 
-        self.url_balance = "internal/integration/balance/"
+    @classmethod
+    def register(cls, params):
+        return cls.do_request(cls.url_register_user, params, method='post', no_api_key=True)
 
-    def get_balance(self):
-        return self.do_request(self.url_balance, self.params)
+    @classmethod
+    def update_user(cls, params):
+        return cls.do_request(cls.url_update_user, params, method='post')
 
-
-# This is the encapsulation class for authentication requests to Shirt.io
-class Authentication(APIResource):
-    def __init__(self):
-        APIResource.__init__(self)
-
-        self.url_order = "internal/integration/auth/"
-
-    def auth(self, params):
+    @classmethod
+    def integration_auth(cls, params):
         # https://shirts.io/api/v1/internal/integration/auth/
-        return self.do_request(self.url_order, params)
+        return cls.do_request(cls.url_integration_auth, params, no_api_key=True)
+
+
+# This is the encapsulation class for balance requests to Shirt.io
+class Balance(APIResource):
+    url_balance = "internal/integration/balance/"
+    url_credit_limit = "internal/integration/credit_limit/"
+
+    @classmethod
+    def get_balance(cls):
+        return cls.do_request(cls.url_balance)
+
+    @classmethod
+    def credit_limit(cls, params):
+        pass
+        # TODO
+        #return cls.do_request(cls.url_credit_limit, params)
 
 
 # This is the encapsulation class for billing requests to Shirt.io
-class Billing(APIResource):
-    def __init__(self, api_key):
-        APIResource.__init__(self)
-        self.params = {'api_key': api_key}
+class Payment(APIResource):
+    url_payment = "payment/"
+    url_payment_status = "payment_status/"
 
-        self.url_payment = "payment/"
-        self.url_payment_status = "payment_status/"
+    @classmethod
+    def payment(cls, params):
+        # https://shirts.io/api/v1/internal/integration/payment/
+        return cls.do_request(cls.url_payment, params, method='post')
 
-    def payment(self, params):
-        params = dict(self.params, **params)
-        return self.do_request(self.url_payment, params, 'post')
-
-    def update_payment_status(self, params):
-        params = dict(self.params, **params)
-        return self.do_request(self.url_payment_status, params, 'post')
+    @classmethod
+    def update_payment_status(cls, params):
+        # https://shirts.io/api/v1/internal/integration/payment_status/
+        return cls.do_request(cls.url_payment_status, params, method='post')
 
 
 # This is the encapsulation class for order requests to Shirt.io
 class Order(APIResource):
-    def __init__(self, api_key):
-        APIResource.__init__(self)
-        self.params = {'api_key': api_key}
+    url_order = "order/"
+    url_status = "status/"
 
-        self.url_order = "order/"
+    @classmethod
+    def place_order(cls, params, files):
+        return cls.do_request(cls.url_order, params, method='post', files=files)
 
-    def place_order(self, params, files):
-        # https://shirts.io/api/v1/order/
-        params = dict(self.params, **params)
-        return self.do_request(self.url_order, params, 'post', files)
+    @classmethod
+    def get_order_status(cls, order_id):
+        # https://shirts.io/api/v1/status/{Order_ID}
+        url = cls.url_status + order_id + "/"
+        return cls.do_request(url)
 
 
 # This is the encapsulation class for products requests to Shirt.io
 class Products(APIResource):
-    def __init__(self, api_key):
-        APIResource.__init__(self)
-        self.params = {'api_key': api_key}
+    url_products = "products/"
+    url_category = "products/category/"
 
-        self.url_products = "products/"
-        self.url_category = "products/category/"
-
-    def list_categories(self):
+    @classmethod
+    def list_categories(cls):
         # https://shirts.io/api/v1/products/category/
-        return self.do_request(self.url_category, self.params)
+        return cls.do_request(cls.url_category)
 
-    def list_products(self, category_id):
+    @classmethod
+    def list_products(cls, category_id):
         # https://shirts.io/api/v1/products/category/{Category_ID}/
-        url = self.url_category + category_id + "/"
-        return self.do_request(url, self.params)
+        url = cls.url_category + category_id + "/"
+        return cls.do_request(url)
 
-    def get_product(self, product_id):
+    @classmethod
+    def get_product(cls, product_id):
         # https://shirts.io/api/v1/products/{Product_ID}/
-        url = self.url_products + product_id + "/"
-        return self.do_request(url, self.params)
+        url = cls.url_products + product_id + "/"
+        return cls.do_request(url)
 
-    def inventory_count(self, product_id, color, state=None):
-        self.params['color'] = color
-        self.params['state'] = state
+    @classmethod
+    def inventory_count(cls, product_id, color, state=None):
+        params = {'color': color, 'state': state}
         inventory = None
         # https://shirts.io/api/v1/products/{Product_ID}/
-        url = self.url_products + product_id + "/"
-        result_inventory = self.do_request(url, self.params)
+        url = cls.url_products + product_id + "/"
+        result_inventory = cls.do_request(url, params)
         if result_inventory and ('inventory' in result_inventory):
             inventory = ast.literal_eval(result_inventory['inventory'])
         return inventory
@@ -109,55 +133,37 @@ class Products(APIResource):
 
 # This is the encapsulation class for quote requests to Shirt.io
 class Quote(APIResource):
-    def __init__(self, api_key):
-        APIResource.__init__(self)
-        self.params = {'api_key': api_key}
+    url_quote = "quote/"
 
-        self.url_quote = "quote"
-
-    def get_quote(self, params):
+    @classmethod
+    def get_quote(cls, params):
         # https://shirts.io/api/v1/quote
-        params = dict(self.params, **params)
-        return self.do_request(self.url_quote, params)
-
-
-# This is the encapsulation class for order status requests to Shirt.io
-class Status(APIResource):
-    def __init__(self, api_key):
-        APIResource.__init__(self)
-        self.params = {'api_key': api_key}
-
-        self.url_status = "status/"
-
-    def check_order_status(self, order_id):
-        # https://shirts.io/api/v1/status/{Order_ID}
-        url = self.url_status + order_id + "/"
-        return self.do_request(url, self.params)
+        return cls.do_request(cls.url_quote, params)
 
 
 # This is the encapsulation class for webhook registration，list，delete requests to Shirt.io
 class Webhook(APIResource):
-    def __init__(self, api_key):
-        APIResource.__init__(self)
-        self.params = {'api_key': api_key}
+    url_webhook = "webhook/"
 
-        self.url_webhook = "webhook/"
+    @classmethod
+    def add_webhook(cls, listener_url):
+        url = cls.url_webhook + "register" + "/"
+        params = {'url': "'%s'" % listener_url}
+        return cls.do_request(url, params, method='post')
 
-    def add_webhook(self, listener_url):
-        url = self.url_webhook + "register" + "/"
-        self.params['url'] = "'%s'" % listener_url
-        return self.do_request(url, self.params, method='post')
+    @classmethod
+    def delete_webhook(cls, listener_url):
+        url = cls.url_webhook + "delete" + "/"
+        params = {'url': "'%s'" % listener_url}
+        return cls.do_request(url, params)
 
-    def delete_webhook(self, listener_url):
-        url = self.url_webhook + "delete" + "/"
-        self.params['url'] = "'%s'" % listener_url
-        return self.do_request(url, self.params)
+    @classmethod
+    def list_webhook(cls):
+        url = cls.url_webhook + "list" + "/"
+        return cls.do_request(url)
 
-    def list_webhook(self):
-        url = self.url_webhook + "list" + "/"
-        return self.do_request(url, self.params, method='get')
-
-    def add_payment_webhook(self):
+    @classmethod
+    def add_payment_webhook(cls):
         url = "shirtsio_webhook/payments/"
-        self.params['url'] = "%s" % url
-        return self.do_request(url, self.params, method='post')
+        params = {'url': "%s" % url}
+        return cls.do_request(url, params, method='post')

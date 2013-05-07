@@ -1,23 +1,15 @@
 import ast
-import sys
-import time
-import datetime
-import types
-import urllib
-import urlparse
 import requests
-import VERSION
-from shirtsio.exception import APIError, InvalidRequestError, AuthenticationError
 
 
-api_key = None
 api_base = 'https://www.shirts.io/api/v1/'
 api_version = None
 
 
 class APIRequestor(object):
-    def __init__(self, key=None):
-        self.api_key = key
+
+    def __init__(self):
+        self.api_key = None
 
     @classmethod
     def api_url(cls, url=''):
