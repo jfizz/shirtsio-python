@@ -23,7 +23,7 @@ class APIResource(object):
 
     @classmethod
     def do_request(cls, url=None, params=None, method="get", files=None, no_api_key=False):
-        requestor = APIRequestor()
+        requestor = APIRequestor(api_key)
         params = cls.dict_params(no_api_key, params)
         url = requestor.api_url(url)
         return requestor.request(url, params, method, files)
