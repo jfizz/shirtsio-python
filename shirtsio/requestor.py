@@ -92,11 +92,11 @@ class APIRequestor(object):
                            rcode, resp)
 
         if rcode in [400, 404]:
-            raise InvalidRequestError(error.get('message'), error.get('param'), rbody, rcode, resp)
+            raise InvalidRequestError(error, rbody, rcode, resp)
         elif rcode == 401:
-            raise AuthenticationError(error.get('message'), rbody, rcode, resp)
+            raise AuthenticationError(error, rbody, rcode, resp)
         else:
-            raise APIError(error.get('message'), rbody, rcode, resp)
+            raise APIError(error, rbody, rcode, resp)
 
     def handle_requests_error(self, e):
         if isinstance(e, requests.exceptions.RequestException):

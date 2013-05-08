@@ -46,6 +46,7 @@ class Balance(APIResource):
 
     @classmethod
     def get_balance(cls):
+        # https://shirts.io/api/v1/internal/integration/balance/
         return cls.do_request(cls.url_balance)
 
     @classmethod
@@ -58,17 +59,22 @@ class Balance(APIResource):
 # This is the encapsulation class for billing requests to Shirt.io
 class Payment(APIResource):
     url_payment = "payment/"
-    url_payment_status = "payment_status/"
+    url_payment_status = "payment/status/"
 
     @classmethod
     def payment(cls, params):
-        # https://shirts.io/api/v1/internal/integration/payment/
+        # https://shirts.io/api/v1/payment/
         return cls.do_request(cls.url_payment, params, method='post')
 
     @classmethod
-    def update_payment_status(cls, params):
-        # https://shirts.io/api/v1/internal/integration/payment_status/
+    def update_payment_url(cls, params):
+        # https://shirts.io/api/v1/payment/status/
         return cls.do_request(cls.url_payment_status, params, method='post')
+
+    @classmethod
+    def get_payment_status(cls, params):
+        # https://shirts.io/api/v1/payment/status/
+        return cls.do_request(cls.url_payment_status, params, method='get')
 
 
 # This is the encapsulation class for order requests to Shirt.io
@@ -133,7 +139,7 @@ class Quote(APIResource):
 
 # This is the encapsulation class for webhook registration，list，delete requests to Shirt.io
 class Webhook(APIResource):
-    url_webhook = "webhook/"
+    url_webhook = "webhooks/"
 
     @classmethod
     def add_webhook(cls, listener_url):
@@ -145,15 +151,9 @@ class Webhook(APIResource):
     def delete_webhook(cls, listener_url):
         url = cls.url_webhook + "delete" + "/"
         params = {'url': "'%s'" % listener_url}
-        return cls.do_request(url, params)
+        return cls.do_request(url, params, method='post')
 
     @classmethod
     def list_webhook(cls):
         url = cls.url_webhook + "list" + "/"
         return cls.do_request(url)
-
-    @classmethod
-    def add_payment_webhook(cls):
-        url = "shirtsio_webhook/payments/"
-        params = {'url': "%s" % url}
-        return cls.do_request(url, params, method='post')
