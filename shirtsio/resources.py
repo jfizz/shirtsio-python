@@ -31,20 +31,10 @@ class APIResource(object):
 
 # This is the encapsulation class for accounts requests to Shirt.io
 class Account(APIResource):
-    url_register_user = "internal/user/register/"
-    url_update_user = "internal/user/update/"
     url_integration_auth = "internal/integration/auth/"
 
     @classmethod
-    def register(cls, params):
-        return cls.do_request(cls.url_register_user, params, method='post', no_api_key=True)
-
-    @classmethod
-    def update_user(cls, params):
-        return cls.do_request(cls.url_update_user, params, method='post')
-
-    @classmethod
-    def integration_auth(cls, params):
+    def auth(cls, params):
         # https://shirts.io/api/v1/internal/integration/auth/
         return cls.do_request(cls.url_integration_auth, params, no_api_key=True)
 
@@ -60,9 +50,9 @@ class Balance(APIResource):
 
     @classmethod
     def credit_limit(cls, params):
-        pass
         # TODO
         #return cls.do_request(cls.url_credit_limit, params)
+        pass
 
 
 # This is the encapsulation class for billing requests to Shirt.io
