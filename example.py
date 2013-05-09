@@ -126,7 +126,7 @@ print inventory_resp
 
 
 
-################# Webhooh ##################
+################# Webhook ##################
 # register webhook
 register_webhook_resp = shirtsio.Webhook.add_webhook("http://test_webhook")
 print register_webhook_resp
@@ -138,4 +138,4 @@ print list_webhook_resp
 # delete webhook
 delete_webhook_resp = shirtsio.Webhook.delete_webhook("http://test_webhook")
 print delete_webhook_resp
-################# End Webhooh ##################
+################# End Webhook ##################
