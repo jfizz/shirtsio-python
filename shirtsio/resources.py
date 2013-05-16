@@ -87,10 +87,9 @@ class Order(APIResource):
         return cls.do_request(cls.url_order, params, method='post', files=files)
 
     @classmethod
-    def get_order_status(cls, order_id):
-        # https://shirts.io/api/v1/status/{Order_ID}
-        url = cls.url_status + order_id + "/"
-        return cls.do_request(url)
+    def get_order_status(cls, params):
+        # https://shirts.io/api/v1/status/
+        return cls.do_request(cls.url_status, params)
 
 
 # This is the encapsulation class for products requests to Shirt.io

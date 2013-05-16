@@ -99,7 +99,7 @@ finally:
     proof_front_file_back.close()
 
 # get order status
-order_status_resp = shirtsio.Order.get_order_status('9999999')
+order_status_resp = shirtsio.Order.get_order_status({"order_id": '9999999'})
 print order_status_resp
 ################# End Order #################
 
