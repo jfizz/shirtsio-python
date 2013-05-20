@@ -122,7 +122,7 @@ class Products(APIResource):
         url = cls.url_products + product_id + "/"
         result_inventory = cls.do_request(url, params)
         if result_inventory and ('inventory' in result_inventory):
-            inventory = ast.literal_eval(result_inventory['inventory'])
+            inventory = result_inventory['inventory']
         return inventory
 
 
