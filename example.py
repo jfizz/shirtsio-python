@@ -1,12 +1,9 @@
 import shirtsio
 
 ################# Account #################
-# get api key
-auth_resp = shirtsio.Account.auth({'username': 'deantest', 'password': 'Pa$$w0rd'})
-print auth_resp['api_key']
+# set api key
+shirtsio.resources.api_key='3ef58f89c6c8d0ce3f71e4ab3537db4e24d6ac40'
 ################# End Account #################
-
-shirtsio.resources.api_key=auth_resp['api_key']
 
 ################# Quote #################
 # get quote
@@ -14,15 +11,6 @@ quote_resp = shirtsio.Quote.get_quote({'garment[0][product_id]': 3, 'garment[0][
                           'print[front][color_count]': 5})
 print quote_resp['subtotal']
 ################# End Quote #################
-
-
-
-################# Balance #################
-# get balance
-balance_resp = shirtsio.Balance.get_balance()
-print balance_resp['balance']
-################# End Balance #################
-
 
 
 ################# Payment #################
