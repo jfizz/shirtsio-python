@@ -23,7 +23,7 @@ script:
 # need to change into a different directory to make sure we use the 2to3 converted code
   - mkdir -p temp/
   - cd temp
-  #- python -m resources.py.test.test_stripe
+
 
 matrix:
   exclude:
