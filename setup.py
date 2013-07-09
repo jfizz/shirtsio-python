@@ -23,6 +23,8 @@ if sys.version_info < (2, 6):
     requests += ', < 0.10.1'
 install_requires = [requests]
 
+from shirtsio.version import VERSION
+
 setup(name='shirtsio',
       version=VERSION,
       description=DESCRIPTION,
@@ -30,7 +32,6 @@ setup(name='shirtsio',
       author_email='support@shirts.io',
       url='https://github.com/ooshirts/shirtsio-python',
       packages=['shirtsio'],
-      scripts=['bin/shirtsio_api.py'],
       install_requires=install_requires,
       platforms='Any',
       classifiers=['Development Status :: 5 - Production/Stable',

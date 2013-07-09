@@ -1,5 +1,4 @@
 include VERSION
 include LICENSE
 include CHANGELOG
-include README.rdoc
-include bin/shirtsio_api.py
+include README.md
