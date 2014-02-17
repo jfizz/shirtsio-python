@@ -7,8 +7,9 @@ shirtsio.resources.api_key='3ef58f89c6c8d0ce3f71e4ab3537db4e24d6ac40'
 
 ################# Quote #################
 # get quote
-quote_resp = shirtsio.Quote.get_quote({'garment[0][product_id]': 3, 'garment[0][color]': 'White', 'garment[0][sizes][med]': 100,
-                          'print[front][color_count]': 5})
+quote_resp = shirtsio.Quote.get_quote({'garment[0][product_id]': 3, 'garment[0][color]': 'White',
+                                       'garment[0][sizes][med]': 100, 'print[front][color_count]': 5,
+                                       'third_party_shipping': 0})
 print quote_resp['subtotal']
 ################# End Quote #################
 
@@ -70,9 +71,43 @@ data = {'test': True, 'price': 79.28,
         'addresses[0][city]': 'Las Vegas', 'addresses[0][state]': 'Nevada', 'addresses[0][country]': 'US',
         'addresses[0][zipcode]': '12345', 'addresses[0][batch]': 1, 'addresses[0][sizes][med]': 2,
         'addresses[0][sizes][lrg]': 2,
-        'print_type': 'Digital Print', 'ship_type': 'Standard',
+        'print_type': 'Digital Print', 'third_party_shipping': 0,
         'garment[0][product_id]': 2, 'garment[0][color]': "White",
         'garment[0][sizes][med]': 2, 'garment[0][sizes][lrg]': 2, 'print[front][color_count]': 5}
+data_ups = {'test': True, 'price': 79.28,
+        'print[back][color_count]': 4, 'print[back][colors][0]': "101C", 'print[back][colors][1]': '107U',
+        'addresses[0][name]': 'John Doe', 'addresses[0][address]': '123 Hope Ln.',
+        'addresses[0][city]': 'Las Vegas', 'addresses[0][state]': 'Nevada', 'addresses[0][country]': 'US',
+        'addresses[0][zipcode]': '12345', 'addresses[0][batch]': 1, 'addresses[0][sizes][med]': 2,
+        'addresses[0][sizes][lrg]': 2,
+        'print_type': 'Digital Print', 'third_party_shipping': 1,
+        'garment[0][product_id]': 2, 'garment[0][color]': "White",
+        'garment[0][sizes][med]': 2, 'garment[0][sizes][lrg]': 2, 'print[front][color_count]': 5,
+        'addresses[0][third_party_ship_type]': 'ups',
+        'third_party_shipping[0][account_type]': 'ups', 'third_party_shipping[0][account_number]': 'ups1234567890'}
+data_usps = {'test': True, 'price': 79.28,
+            'print[back][color_count]': 4, 'print[back][colors][0]': "101C", 'print[back][colors][1]': '107U',
+            'addresses[0][name]': 'John Doe', 'addresses[0][address]': '123 Hope Ln.',
+            'addresses[0][city]': 'Las Vegas', 'addresses[0][state]': 'Nevada', 'addresses[0][country]': 'US',
+            'addresses[0][zipcode]': '12345', 'addresses[0][batch]': 1, 'addresses[0][sizes][med]': 2,
+            'addresses[0][sizes][lrg]': 2,
+            'print_type': 'Digital Print', 'third_party_shipping': 1,
+            'garment[0][product_id]': 2, 'garment[0][color]': "White",
+            'garment[0][sizes][med]': 2, 'garment[0][sizes][lrg]': 2, 'print[front][color_count]': 5,
+            'addresses[0][third_party_ship_type]': 'usps',
+            'third_party_shipping[0][account_type]': 'usps',
+            'third_party_shipping[0][username]': 'Test Account', 'third_party_shipping[0][password]': 'test'}
+data_dhl = {'test': True, 'price': 79.28,
+            'print[back][color_count]': 4, 'print[back][colors][0]': "101C", 'print[back][colors][1]': '107U',
+            'addresses[0][name]': 'John Doe', 'addresses[0][address]': '123 Hope Ln.',
+            'addresses[0][city]': 'Las Vegas', 'addresses[0][state]': 'Nevada', 'addresses[0][country]': 'US',
+            'addresses[0][zipcode]': '12345', 'addresses[0][batch]': 1, 'addresses[0][sizes][med]': 2,
+            'addresses[0][sizes][lrg]': 2,
+            'print_type': 'Digital Print', 'third_party_shipping': 1,
+            'garment[0][product_id]': 2, 'garment[0][color]': "White",
+            'garment[0][sizes][med]': 2, 'garment[0][sizes][lrg]': 2, 'print[front][color_count]': 5,
+            'addresses[0][third_party_ship_type]': 'dhl',
+            'third_party_shipping[0][account_type]': 'dhl', 'third_party_shipping[0][account_number]': 'dhl1234567890'}
 files = {'print[front][artwork]': art_work_file_front, 'print[front][proof]': proof_file_front,
          'print[back][artwork]': art_work_file_back, 'print[back][proof]': proof_front_file_back}
 
