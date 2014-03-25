@@ -1,6 +1,47 @@
 # Shirts.io Python Wrapper
 
 
+## Introduction
+
+Shirts.io is a t-shirt printing and fulfillment platform that lets you print and ship shirts anywhere in the world on demand.
+
+### Create an Account
+
+Creating an account is simple and quick! <a href="https://shirts.io/accounts/register">Create an account here.</a>
+
+After creating an account, you will be given a unique API key to grant you access to the Shirts.io API.
+
+### How it works
+
+The Shirts.io API is broken up into four main components:
+
+<ul>
+<li><a href="https://shirts.io/docs/products_reference">Products API</a>
+<ul>
+<li>View our entire product selection</li>
+<li>Access thousands of high-quality product images</li>
+<li>View product specifications, available colors, available sizes</li>
+<li>Check stock levels before placing an order</li>
+</ul></li>
+<li><a href="https://shirts.io/docs/quote_reference">Quote API</a>
+<ul>
+<li>Get an exact quote before placing an order</li>
+</ul></li>
+<li><a href="https://shirts.io/docs/order_reference">Order API</a>
+<ul>
+<li>Place an order</li>
+<li>Upload artwork and all order details</li>
+</ul></li>
+<li><a href="https://shirts.io/docs/status_reference">Status API</a>
+<ul>
+<li>Check the current status of your order</li>
+<li>Receive tracking numbers when available</li>
+</ul></li>
+</ul>
+
+You can learn more by reading the <a href="https://www.shirts.io/docs/api_basics">API Manual</a>
+
+
 ## Installation
 
 To install from source, run:
